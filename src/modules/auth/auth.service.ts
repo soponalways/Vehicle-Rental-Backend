@@ -25,7 +25,7 @@ const signin = async(payload: Record<string, unknown>) => {
     const isMatched = await bcrypt.compare(password as string , userExist.rows[0].password); 
     if(!isMatched) return {success: false, message: "Password not matched"}; 
     const { id, name, email: tEmail, phone, role } = userExist.rows[0]; 
-    console.log(userExist.rows[0]);
+    // console.log(userExist.rows[0]);
     const token = jwt.sign({id, name, email: tEmail, phone, role,}, config.jwtSecrete as string, {
         expiresIn: "7d"
     }); 
