@@ -24,6 +24,16 @@ const initDB = async () => {
         availability_status VARCHAR(20) CHECK ( availability_status IN ('booked' , 'available') ), 
         created_at TIMESTAMP DEFAULT NOW(), 
         updated_at TIMESTAMP DEFAULT NOW()
+        )`); 
+
+    await pool.query(`CREATE TABLE IF NOT EXISTS bookings(
+        id SERIAL PRIMARY KEY, 
+        customer_id INT REFERENCES users(id) ON DELETE CASCADE, 
+        vehicle_id INT REFERENCES vehicles(id) ON DELETE CASCADE, 
+        rent_start_date TIMESTAMP NOT NULL, 
+        rent_end_date TIMESTAMP NOT NULL CHECK (rent_end_date > rent_start_date), 
+        total_price INT NOT NULL CHECK( total_price > 0 ) , 
+        status VARCHAR(20) CHECK( status IN('active', 'cancelled', 'returned'))
         )`)
 }
 
