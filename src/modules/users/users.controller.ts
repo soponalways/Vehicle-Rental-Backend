@@ -34,6 +34,7 @@ const updateUser = async (req: Request, res: Response) => {
          return res.status(200).json({
              success: true,
              message: "User updated successfully",
+             data: result
          });
    } catch (err: any) {
         return res.status(500).json({
@@ -41,12 +42,23 @@ const updateUser = async (req: Request, res: Response) => {
             message: err.message
         })
    }
+}; 
+
+const deleteUsers = async (req: Request, res: Response) => {
+    const {id } = req.params;
+    const result = await usersServices.deleteUsers(id as string)
+    console.log({Resultoncontroller: result});
+    res.status(200).json({
+        "success": true,
+        "message": "User deleted successfully"
+    })
 }
 
 
 const usersController = {
     getAllUsers, 
     updateUser, 
+    deleteUsers, 
 }; 
 
 export default usersController; 

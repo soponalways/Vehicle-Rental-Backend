@@ -13,17 +13,23 @@ const updateUser = async (id : string, user: JwtPayload, dataToUpdate : Record<s
             return ""
         }
         const result = await pool.query(`UPDATE users SET name=$1, email=$2, phone=$3 WHERE id=$4 RETURNING *`, [dataToUpdate?.name, dataToUpdate?.email, dataToUpdate?.phone, id ]); 
-        return result; 
+        return result.rows; 
     }; 
 
     const result = await pool.query(`UPDATE users SET name=$1, email=$2, phone=$3, role=$4 WHERE id=$5 RETURNING *`, [ dataToUpdate?.name, dataToUpdate?.email, dataToUpdate?.phone, dataToUpdate?.role, id]); 
-    return result
+    return result.rows
 
-}
+}; 
+
+    const deleteUsers = async (id: string) => {
+        const isActiveBookings = await pool.query(`SELECT * FROM bookings WHERE customer_id=$1 AND status=$2`, [id, "active"]); 
+        console.log({isActiveBookings});
+    }   
 
 const usersServices = {
     getAllUsers,   
     updateUser,  
+    deleteUsers,
 }; 
 
 export default usersServices; 
