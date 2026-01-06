@@ -25,10 +25,28 @@ const createBooking = async (req: Request, res: Response) => {
             message: err.message
         })
     }
+}; 
+
+const getBookings = async(req: Request, res: Response) => {
+    const user = req.user as JwtPayload; 
+    try {
+        const result = await bookingsServices.getBookings(user); 
+        return res.status(200).json({
+            success: false,
+            message: "Your bookings retrieved successfully", 
+            data: result
+        })
+    } catch (err: any) {
+        return res.status(500).json({
+            success: false, 
+            message: err.message
+        })
+    }
 }
 
 const bookingsController = {
     createBooking, 
+    getBookings, 
 }; 
 
 export default bookingsController; 

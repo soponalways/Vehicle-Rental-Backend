@@ -42,9 +42,63 @@ const createBooking = async(payload: Record<string, any>, reqUser: JwtPayload) =
             daily_rent_price
         }
     }  
+}; 
+
+const getBookings = async(reqUser : JwtPayload)=> {
+    //* check valid customer 
+    if(reqUser.role === "customer") {
+        const customer = (await pool.query(`SELECT * FROM users WHERE email=$1`, [reqUser.email])).rows[0]; 
+        const result = await pool.query(`SELECT * FROM bookings WHERE customer_id=$1`, [customer.id]); 
+        const data =await Promise.all(
+            result.rows.map(async (row) => {
+                const vehicle_id = row.vehicle_id;
+                const vehicleInfo = await pool.query(`SELECT * FROM vehicles WHERE id=$1`, [vehicle_id])
+                const vehicle_name = vehicleInfo.rows[0].vehicle_name;
+                const registration_number = vehicleInfo.rows[0].registration_number;
+                const type = vehicleInfo.rows[0].type;
+
+                const newData = {
+                    ...row,
+                    vehicle: {
+                        vehicle_name,
+                        registration_number,
+                        type
+                    }
+                }
+                return await newData;
+            })
+        ); 
+        return data; 
+    };; 
+
+    //* For Admin user
+    const allBookings = (await pool.query(`SELECT * FROM bookings`)).rows; 
+    const data = await Promise.all(
+        allBookings.map(async (booking) => {
+            const { vehicle_id, customer_id} = booking; 
+            const customer = (await pool.query(`SELECT * FROM users WHERE id=$1`, [customer_id])).rows[0]; 
+            const vehicleOfBooking = (await pool.query(`SELECT * FROM vehicles WHERE id=$1`, [vehicle_id])).rows[0]; 
+
+            const newData = {
+                ...booking,
+                customer: {
+                    name: customer.name,
+                    email: customer.email, 
+                },
+                vehicle: {
+                    vehicle_name: vehicleOfBooking.vehicle_name,
+                    registration_number: vehicleOfBooking.registration_number, 
+                }
+            }; 
+            return await newData; 
+        })
+    ); 
+    return data; 
+    
 }
 
 const bookingsServices = {
-    createBooking, 
+    createBooking,
+    getBookings,  
 }; 
 export default bookingsServices; 
