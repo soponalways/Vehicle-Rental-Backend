@@ -120,3 +120,39 @@ http://localhost:5000
 
 **Sopon islam**
 Full Stack Developer
+
+
+
+# 👋 About Me
+
+Hi, I'm **Sopon islam**, a passionate **Full Stack Web Developer** specializing in TypeScript-based technologies. I enjoy building scalable, clean, and real-world applications with modern web stacks.
+
+---
+
+## 🔗 Contact & Profiles
+
+* 💼 **LinkedIn:** [https://www.linkedin.com/in/sopon-islam1/](https://www.linkedin.com/in/sopon-islam1/)
+* 💻 **GitHub:** [https://github.com/soponalways](https://github.com/soponalways)
+* 🌐 **Portfolio:** [https://sopon-islam.web.app/](https://sopon-islam.web.app/)
+* 📧 **Email:** [soponislam132s@gmail.com](mailto:soponislam132s@gmail.com)
+
+---
+
+## 🧠 Tech Focus
+
+* JavaScript (ES6+)
+* React.js
+* Node.js & Express.js
+* PostgreSQL & MongoDB
+* REST API Development
+* Modular Backend Architecture
+
+---
+
+## 🚀 Current Goal
+
+Actively seeking opportunities as a **Frontend / MERN Stack / Full Stack Developer**, where I can contribute, learn, and grow as a software engineer.
+
+---
+
+⭐ Feel free to connect with me or explore my projects!
