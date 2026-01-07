@@ -4,6 +4,7 @@ import authRouter from "./modules/auth/auth.routes";
 import vehicleRouter from "./modules/vehicles/vehicles.route";
 import userRoutes from "./modules/users/users.route";
 import bookingsRoute from "./modules/bookings/booking.route";
+import path from "path"
 const app = express(); 
 
 initDB(); 
@@ -22,6 +23,14 @@ app.use("/api/v1/bookings", bookingsRoute)
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!')
+})
+
+app.use((req: Request, res: Response) => {
+    return res.status(404).json({
+        success: false, 
+        message: "Sorry! Api not found", 
+        path: req.path
+    })
 })
 
 
