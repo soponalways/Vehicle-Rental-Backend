@@ -97,10 +97,37 @@ const getBookings = async(reqUser : JwtPayload)=> {
     ); 
     return data; 
     
+}; 
+
+const updateBooking = async (status: string, bookingId : string, reqUser: JwtPayload) => {
+    await autoReturn(); 
+    const booking = (await pool.query(`SELECT * FROM bookings WHERE id=$1`, [bookingId])).rows[0]; 
+    if(reqUser.role ==='customer') {
+        const currentTime = new Date().getTime(); 
+        const rentStartTime = new Date(booking.rent_start_date).getTime(); 
+        if(currentTime > rentStartTime) {
+            return ""
+        }; 
+
+        const result = (await pool.query(`UPDATE bookings SET status=$1 WHERE id=$2 RETURNING *`, [status, bookingId])).rows[0]; 
+        await pool.query(`UPDATE vehicles SET availability_status=$1 WHERE id=$2`, ["available", booking.vehicle_id]); 
+        return result; 
+    }; 
+
+    // Admin operation 
+    const result = (await pool.query(`UPDATE bookings SET status=$1 WHERE id=$2 RETURNING *`, [status, bookingId])).rows[0];
+    const vehicleResult = (await pool.query(`UPDATE vehicles SET availability_status=$1 WHERE id=$2 RETURNING *`, ["available", booking.vehicle_id])).rows[0]; 
+    return {
+        ...result,
+        vehicle: {
+            availability_status: vehicleResult.availability_status
+        }
+    }
 }
 
 const bookingsServices = {
     createBooking,
-    getBookings,  
+    getBookings, 
+    updateBooking 
 }; 
 export default bookingsServices; 
