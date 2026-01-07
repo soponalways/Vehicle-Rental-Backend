@@ -3,7 +3,7 @@
 **Sopon Vehicle Rental** is a backend-based vehicle rental management system built with a **modular architecture**.  
 This project provides secure authentication, role-based access, and scalable APIs for managing vehicle rentals.
 
-🔗 **Live URL:** _Coming Soon_ 
+🔗 **Live URL:** [https://sopon-vehicle-rental.vercel.app/](https://sopon-vehicle-rental.vercel.app/)
 
 🔗 [API Documentation](/API_Documantion.md)
 
