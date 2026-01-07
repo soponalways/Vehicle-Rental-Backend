@@ -1,3 +1,4 @@
+import autoReturn from "../../config/autoReturn";
 import { pool } from "../../config/db"
 
 const createVehicle = async (payload: Record<string, any>) => {
@@ -12,11 +13,13 @@ const createVehicle = async (payload: Record<string, any>) => {
 }; 
 
 const getAllVehicle = async () => {
+     await autoReturn(); 
      const result = await pool.query(`SELECT * FROM vehicles`)
      return result.rows; 
 }
 
 const getVehicleById = async(id: string) => {
+     await autoReturn(); 
      const result = await pool.query(`SELECT * FROM vehicles WHERE id=$1`, [id]); 
      return result.rows[0]; 
 }; 

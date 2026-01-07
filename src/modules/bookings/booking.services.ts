@@ -1,5 +1,6 @@
 import { JwtPayload } from "jsonwebtoken";
 import { pool } from "../../config/db";
+import autoReturn from "../../config/autoReturn";
 
 const createBooking = async(payload: Record<string, any>, reqUser: JwtPayload) => {
     const { customer_id, vehicle_id, rent_start_date, rent_end_date } = payload || {}; 
@@ -45,6 +46,7 @@ const createBooking = async(payload: Record<string, any>, reqUser: JwtPayload) =
 }; 
 
 const getBookings = async(reqUser : JwtPayload)=> {
+    await autoReturn(); 
     //* check valid customer 
     if(reqUser.role === "customer") {
         const customer = (await pool.query(`SELECT * FROM users WHERE email=$1`, [reqUser.email])).rows[0]; 
