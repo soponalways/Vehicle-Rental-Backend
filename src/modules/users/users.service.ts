@@ -21,9 +21,13 @@ const updateUser = async (id : string, user: JwtPayload, dataToUpdate : Record<s
 
 }; 
 
-    const deleteUsers = async (id: string) => {
-        const isActiveBookings = await pool.query(`SELECT * FROM bookings WHERE customer_id=$1 AND status=$2`, [id, "active"]); 
-        console.log({isActiveBookings});
+const deleteUsers = async (userId: string) => {
+    const isActiveBookings = (await pool.query(`SELECT * FROM bookings WHERE customer_id=$1 AND status=$2`, [userId, "active"])).rows; 
+        if(!!isActiveBookings){
+            return ""
+        }; 
+    const resullt = (await pool.query(`DELETE FROM users WHERE id=$1 RETURNING *`, [userId])).rows[0]; 
+    return resullt; 
     }   
 
 const usersServices = {

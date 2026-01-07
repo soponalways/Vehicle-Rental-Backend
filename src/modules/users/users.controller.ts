@@ -45,13 +45,25 @@ const updateUser = async (req: Request, res: Response) => {
 }; 
 
 const deleteUsers = async (req: Request, res: Response) => {
-    const {id } = req.params;
-    const result = await usersServices.deleteUsers(id as string)
-    console.log({Resultoncontroller: result});
-    res.status(200).json({
-        "success": true,
-        "message": "User deleted successfully"
-    })
+    try {
+        const {userId } = req.params;
+        const result = await usersServices.deleteUsers(userId as string)
+        if(!result){
+            return res.status(500).json({
+                success: false,
+                message: "User delete unsuccessfull due to active  bookings"
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            message: "User deleted successfully"
+        })
+    } catch (err: any) {
+        return res.status(500).json({
+            success: false,
+            message: err.message
+        })
+    }
 }
 
 
